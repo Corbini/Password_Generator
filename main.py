@@ -1,7 +1,21 @@
+import string
+import random
 
 
 def get_letters(count=0, big_letters=True):
-    return ["a", "C"]
+    letters_data = string.ascii_lowercase
+    if big_letters:
+        letters_data += string.ascii_uppercase
+
+    picked_letters = []
+
+    while count:
+        picked_letters.append(
+            letters_data[random.randint(0, len(letters_data)-1)])
+        count -= 1
+
+    print(picked_letters)
+    return picked_letters
 
 
 def get_numbers(count=0, specials=True):
@@ -20,10 +34,10 @@ def get_bool_input(text=""):
     while True:
         user_input = input(text + "(y for yes, n for no): ")
 
-        if user_input is "y":
+        if user_input == "y":
             return True
 
-        if user_input is "n":
+        if user_input == "n":
             return False
 
         print("Incorrect input")
@@ -33,7 +47,7 @@ def get_number_input(text=""):
     while True:
         user_input = input(text + ": ")
         if user_input.isdecimal():
-            return user_input
+            return int(user_input)
 
         print("incorrect input")
 
@@ -58,4 +72,5 @@ def main():
     print("Your password is:", password)
 
 
+random.seed()
 main()
