@@ -2,24 +2,35 @@ import string
 import random
 
 
+def get_random_from_list(count=0, data_list=[]):
+    if len(data_list) == 0:
+        return []
+
+    picked = []
+
+    while count:
+        picked.append(
+            data_list[random.randint(0, len(data_list) - 1)])
+        count -= 1
+
+    print(picked)
+    return picked
+
+
 def get_letters(count=0, big_letters=True):
     letters_data = string.ascii_lowercase
     if big_letters:
         letters_data += string.ascii_uppercase
 
-    picked_letters = []
-
-    while count:
-        picked_letters.append(
-            letters_data[random.randint(0, len(letters_data)-1)])
-        count -= 1
-
-    print(picked_letters)
-    return picked_letters
+    return get_random_from_list(count, letters_data)
 
 
-def get_numbers(count=0, specials=True):
-    return ["1", "2", "!"]
+def get_numbers(count=0, punctuation=True):
+    numbers_data = string.ascii_letters
+    if punctuation:
+        numbers_data += string.punctuation
+
+    return get_random_from_list(count, numbers_data)
 
 
 def randomize_placement(letters=[], numbers=[]):
@@ -61,8 +72,8 @@ def main():
     letters = get_letters(amount_of_letters,want_big_letters)
 
     amount_of_numbers = get_number_input("How many numbers do you want")
-    want_specials = get_bool_input("Do you want big letters")
-    numbers = get_numbers(amount_of_numbers, want_specials)
+    want_punctuation = get_bool_input("Do you want punctuation")
+    numbers = get_numbers(amount_of_numbers, want_punctuation)
 
     while True:
         password = randomize_placement(letters, numbers)
