@@ -41,7 +41,6 @@ def password_dont_have_words(password="", words_file=[]):
 
     for n in range(0, len(password)):
         subword = password[n:]
-        print(subword)
         for word in words_file:
             if subword[:len(word)] == word:
                 print("we did it:", word)
@@ -72,19 +71,41 @@ def get_number_input(text=""):
         print("incorrect input")
 
 
+def manual_setting():
+    data_list = []
+
+    amount_of_letters = get_number_input("How many letters do you want?")
+    want_big_letters = get_bool_input("Do you want big letters?")
+    data_list += get_letters(amount_of_letters, want_big_letters)
+
+    amount_of_numbers = get_number_input("How many numbers do you want")
+    want_punctuation = get_bool_input("Do you want punctuation")
+    data_list += get_numbers(amount_of_numbers, want_punctuation)
+    return data_list
+
+
+def automatic_setting():
+    length = get_number_input("Enter length of a password")
+    amount_of_letters = random.randint(0,length)
+
+    data_list = []
+    data_list += get_letters(amount_of_letters, True)
+    data_list += get_numbers(length - amount_of_letters, True)
+
+    return data_list
+
+
 def main():
     print("Welcome to password generator",
           "Specify your password", sep="\n")
 
     data_list = []
 
-    amount_of_letters = get_number_input("How many letters do you want?")
-    want_big_letters = get_bool_input("Do you want big letters?")
-    data_list += get_letters(amount_of_letters,want_big_letters)
-
-    amount_of_numbers = get_number_input("How many numbers do you want")
-    want_punctuation = get_bool_input("Do you want punctuation")
-    data_list += get_numbers(amount_of_numbers, want_punctuation)
+    choice = get_bool_input("Do you want additional settings")
+    if choice:
+        data_list = manual_setting()
+    else:
+        data_list = automatic_setting()
 
     word_list = load_from_file("words.txt")
 
