@@ -24,7 +24,29 @@ def get_numbers(count=0, punctuation=True):
     return random.choices(numbers_data, k=count)
 
 
-def password_dont_have_words(password=""):
+def load_from_file(words_file):
+    words_list = []
+    with open(words_file, 'r') as file:
+        for line in file:
+            words_list.append(line[:-1])
+
+    return words_list
+
+
+def password_dont_have_words(password="", words_file=[]):
+    if words_file == [] or password == "":
+        return True
+
+    password = password.lower()
+
+    for n in range(0, len(password)):
+        subword = password[n:]
+        print(subword)
+        for word in words_file:
+            if subword[:len(word)] == word:
+                print("we did it:", word)
+                return False
+
     return True
 
 
@@ -54,24 +76,26 @@ def main():
     print("Welcome to password generator",
           "Specify your password", sep="\n")
 
-    data_list=[]
+    data_list = []
 
     amount_of_letters = get_number_input("How many letters do you want?")
     want_big_letters = get_bool_input("Do you want big letters?")
     data_list += get_letters(amount_of_letters,want_big_letters)
-    print(data_list)
 
     amount_of_numbers = get_number_input("How many numbers do you want")
     want_punctuation = get_bool_input("Do you want punctuation")
     data_list += get_numbers(amount_of_numbers, want_punctuation)
-    print(data_list)
+
+    word_list = load_from_file("words.txt")
 
     while True:
         password = random.sample(data_list, k=len(data_list))
-        if password_dont_have_words(password):
+        password = "".join(password)
+        print(password)
+        if password_dont_have_words(password, word_list):
             break
 
-    print("Your password is:", "".join(password))
+    print("Your password is:", password)
 
 
 random.seed()
